@@ -12,9 +12,11 @@ import gui.MainWindow;
 import org.jacop.core.Store;
 
 /**
- *
+ * Class in which whole program starts
  * @author PF
- */
+ * @version 1.0
+ * @since   2018-01-03 
+*/
 public class JobShop {   
     
     /**

@@ -6,8 +6,10 @@
 package core;
 
 /**
- *
+ * Custom tuple class, implemented because of lack of tuples in Java
  * @author PF
+ * @version 1.0
+ * @since   2018-01-03 
  */
 public class Tuple<X, Y, Z> { 
   public final X x; 

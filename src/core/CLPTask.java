@@ -23,10 +23,13 @@ import org.jacop.constraints.Sum;
 import org.jacop.constraints.SumInt;
 import org.jacop.constraints.XeqY;
 import org.jacop.constraints.XlteqY;
+import org.jacop.core.Var;
 
 /**
- *
+ * Class that describes Constraint Logic Programming task
  * @author PF
+ * @version 1.0
+ * @since   2018-01-03 
  */
 public class CLPTask {
     
@@ -63,6 +66,16 @@ public class CLPTask {
     
     private static int maxXCoord;
     
+    //@see         Image
+    /**
+    * CLPTask object constructor
+    * @param  numTasksKinds number of different kinds of tasks
+    * @param  tasksDurationInt tasks duration in Integer
+    * @param  numTasksQuantity quantity of tasks of different tasks
+    * @param  numMachines number of machines for problem
+    * @param  cumulativeLimit limit for cumulative constraint
+    * @param  isEnergyOptimizationSelected boolean that determines
+    */    
     public CLPTask(int numTasksKinds, int[] tasksDurationInt, 
             int[] numTasksQuantity, int numMachines, int[] cumulativeLimit,
             int isEnergyOptimizationSelected) 
@@ -118,6 +131,10 @@ public class CLPTask {
         energyOptimizationSelected = (isEnergyOptimizationSelected == 1) ? true : false;
     }    
     
+    /**
+    * CLPTask object constructor
+    * @return IntVar[][] of rectangles - each rectangle represents task
+    */
     private IntVar[][] makeTasks()
     {
         System.out.println("core.CLPTask.makeTasks()");
@@ -197,6 +214,9 @@ public class CLPTask {
         return rectangles;
     }
 
+    /**
+    * Impose constraint on input magazine, that sets flag for taking from magazine
+    */
     public void takeFromMagazineConstraint()
     {
         //No i jeszcze mozna dolozyc cos w rodzaju jesli ktorykolwiek z x-ów jest 
@@ -232,6 +252,9 @@ public class CLPTask {
         }
     }
     
+    /**
+    * Method that imposes Diff2, Sum and cumulative constraint
+    */
     public void model()
     {
         System.out.println("core.CLPTask.model()");
@@ -263,32 +286,55 @@ public class CLPTask {
         takeFromMagazineConstraint();
     }
     
+    /**
+    * CLPTask object constructor
+    * @return tuple that contains int[][] - information about solution in int array, store - store object, string of labelling
+    */
     public Tuple<int[][], Store, String> search()
     {
         System.out.println("core.CLPTask.search()");
-        boolean result = store.consistency();
-        //SelectChoicePoint select = new SimpleSelect(vars, new SmallestDomain(), new IndomainMin());
+        boolean result = store.consistency();        
+        
         Search labelSlave = new DepthFirstSearch();
-        SelectChoicePoint selectSlave = 
-                new SimpleSelect(varsY, new SmallestMin(), new SmallestDomain(), new IndomainMin());
-        labelSlave.setSelectChoicePoint(selectSlave);
-        
         Search labelMaster = new DepthFirstSearch();
-        SelectChoicePoint selectMaster = 
-                new SimpleSelect(varsX, new SmallestMin(), new SmallestDomain(), new IndomainMin());
-        labelMaster.setSelectChoicePoint(selectMaster);
-        labelMaster.addChildSearch(labelSlave);
         
-        if (energyOptimizationSelected)
-        {
-            //Branch and Bound
-            labelMaster.setTimeOut(100);
-            result = labelMaster.labeling(store, selectMaster, energySum);
-        }
-        else
-        {
-            result = labelMaster.labeling(store, selectMaster);            
-        }
+//        if (energyOptimizationSelected)
+//        {
+//            Search searchLabel = new DepthFirstSearch();
+//            Var[] vars = new Var[varsX.length * 2];
+//            int j = 0;
+//            for(int i = 0; i < varsX.length; ++i)
+//            {
+//                vars[i] = varsX[i];
+//                j = i;
+//            }
+//            for (; j < varsY.length; ++j)
+//            {
+//                vars[j] = varsY[j - (varsX.length - 1)];
+//            }
+//            SelectChoicePoint select = new SimpleSelect(vars, new SmallestDomain(), new IndomainMin());
+//            result = searchLabel.labeling(store, select, energySum);
+//        }
+//        else
+//        {
+            SelectChoicePoint selectSlave = 
+                    new SimpleSelect(varsY, new SmallestMin(), new SmallestDomain(), new IndomainMin());
+            labelSlave.setSelectChoicePoint(selectSlave);
+
+            SelectChoicePoint selectMaster = 
+                    new SimpleSelect(varsX, new SmallestMin(), new SmallestDomain(), new IndomainMin());
+            labelMaster.setSelectChoicePoint(selectMaster);
+            labelMaster.addChildSearch(labelSlave);
+            if(energyOptimizationSelected)
+            {
+                result = labelMaster.labeling(store, selectMaster, energySum);
+            }
+            else
+            {
+                result = labelMaster.labeling(store, selectMaster);                            
+            }
+            
+//        }
         
         int[][] Tab = new int[4][varsX.length];
         
@@ -334,10 +380,15 @@ public class CLPTask {
             return resultTuple;
         }
         Tuple resultTuple = new Tuple(null, store, null);
+        
         return resultTuple;
     }
     
-    
+    /**
+    * CLPTask object constructor
+    * @param  resultTuple tuple that contains int[][] - array with information about solution, Store - store object
+    * @return String that contains all necessary information about solution
+    */
     public static String buildResultString(Tuple2<int[][], Store> resultTuple)
     {
         int[][] result = resultTuple.x;

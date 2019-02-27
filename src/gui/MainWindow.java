@@ -24,8 +24,10 @@ import org.jfree.chart.ChartPanel;
 
 
 /**
- *
+ * Class defining all of the stuff that is present in MainWindow
  * @author PF
+ * @version 1.0
+ * @since   2018-01-03 
  */
 public class MainWindow extends javax.swing.JFrame {
 
@@ -58,7 +60,10 @@ public class MainWindow extends javax.swing.JFrame {
         //ganttChartPanel.add(chart.createGanttChart(result));
     }
     
-    
+    /**
+    * Getter for all values present in GUI  
+    * @return tasksDurationsUserDefined, tasksQuantitiesUserDefined, numTasksKindsNumMachinesCumulativeLimitsInt, isCheckBoxSelected
+    */   
     public Tuple<int[], int[], int[]> getGUIValues()
     {
         commitSpinnerEdits();
@@ -94,6 +99,9 @@ public class MainWindow extends javax.swing.JFrame {
         //DrawCharts(Tab);
     }
 
+    /**
+    * Date getter from jSpinner
+    */   
     private void getDate()
     {
         String input = jSpinner_date.getValue().toString();
@@ -101,7 +109,11 @@ public class MainWindow extends javax.swing.JFrame {
         ZonedDateTime zdt = ZonedDateTime.parse( input , f );
         startDate = Date.from(zdt.toInstant());
     }
-        
+     
+    /**
+    * Method for drawing gantt-chart
+    * @param Tab int[][] containing information about solution int[0][] - X; int[1][] - Y; int[2][] - duration;
+    */   
     private void DrawCharts(int[][] Tab)
     {
         chart = new XYIntervalBarChart(Tab, startDate);
@@ -394,6 +406,10 @@ public class MainWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+    * Method that handles action after button click
+    * @param evt event on button click
+    */  
     private void MakeScheduleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_MakeScheduleButtonActionPerformed
         // TODO add your handling code here:
         jTextArea1.setText("");
@@ -415,16 +431,16 @@ public class MainWindow extends javax.swing.JFrame {
             text += "\n" + result.z;
             printText(text);
             drawGantt(result.x);
+            JPanel.removeAll();
+            DrawCharts(result.x);
+
+            JPanel.updateUI();
+            //JPanel.validate();
         }
         else
         {
             printText(result.y.toString() + "\nNo solution found");
         }
-        JPanel.removeAll();
-        DrawCharts(result.x);
-        
-        JPanel.updateUI();
-        //JPanel.validate();
         task.equals(null);
     }//GEN-LAST:event_MakeScheduleButtonActionPerformed
 
@@ -503,6 +519,9 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JSpinner task5Quantity;
     // End of variables declaration//GEN-END:variables
 
+    /**
+    * Method that commits spinner values on GUI
+    */
     private void commitSpinnerEdits() {
         javax.swing.JSpinner[] spinnerList = new javax.swing.JSpinner[]
         {numTasksKindsSpinner,

@@ -18,13 +18,18 @@ import org.jfree.data.gantt.TaskSeries;
 import org.jfree.data.gantt.TaskSeriesCollection;
 
 /**
- * @author imssbora
- *
+ * Deprecated
+ * @author PF
+ * @version 1.0
+ * @since   2018-01-03 
  */
 public class MyChart extends JFrame {
 
    private static final long serialVersionUID = 1L;
 
+    /**
+    * Deprecated
+    */
    public MyChart(String title) {
 //      super(title);
 //      // Create dataset
@@ -41,6 +46,9 @@ public class MyChart extends JFrame {
 //      setContentPane(panel);
    }
 
+    /**
+    * Deprecated
+    */
    private IntervalCategoryDataset getCategoryDataset() {
 
       TaskSeries series1 = new TaskSeries("Estimated Date");

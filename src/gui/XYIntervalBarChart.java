@@ -17,6 +17,12 @@ import org.jfree.chart.plot.XYPlot;
 import java.util.concurrent.TimeUnit;
 import java.util.Arrays;
 
+/**
+* Gantt chart drawer
+* @author PF
+* @version 1.0
+* @since   2018-01-03 
+*/
 public class XYIntervalBarChart {
 
 int statesCount;
@@ -38,6 +44,11 @@ Date chartEndDate;
 
 ChartPanel chartPanel;
 
+/**
+* Gantt chart constructor
+* @param Tab array containing information about solution
+* @param startDate Start date for gantt chart
+*/
 public XYIntervalBarChart(int[][] Tab, Date startDate) {
     //super(title);
     // set up some test data
@@ -55,6 +66,9 @@ public XYIntervalBarChart(int[][] Tab, Date startDate) {
     
 }
 
+/**
+* Create interval stacked chart
+*/
 private JFreeChart createIntervalStackedChart() {
     XYIntervalSeriesCollection dataset = createXYIntervalDataset();
     XYBarRenderer xyRend = new XYBarRenderer();
@@ -77,6 +91,9 @@ private JFreeChart createIntervalStackedChart() {
     return new JFreeChart(plot);
 }
 
+/**
+* Create XY interval dataset
+*/
 private XYIntervalSeriesCollection createXYIntervalDataset() {
     XYIntervalSeriesCollection dataset = new XYIntervalSeriesCollection();
 
@@ -116,6 +133,10 @@ private XYIntervalSeriesCollection createXYIntervalDataset() {
     return dataset;
 }
 
+/**
+* Parse solution data from solution format into gantt-chart format
+* @param Tab information from solution
+*/
 private void initData(int[][] Tab ) {
     String[] Machines = {"Machine1", "Machine2", "Machine3", "Machine4", "Machine5"};
     
@@ -170,7 +191,9 @@ private void initData(int[][] Tab ) {
     catArray = new String[list.size()];
     catArray = list.toArray(catArray);
 }
-// Chart object class that hold category, event time and status
+    /**
+    * Chart object class that hold category, event time and status
+    */
     private class EventStatus {
 
         private String name;
@@ -220,6 +243,9 @@ private void initData(int[][] Tab ) {
         }
     }
 
+    /**
+    * chartPanel getter
+    */
     public ChartPanel GetPanel()
     {
         return chartPanel;
