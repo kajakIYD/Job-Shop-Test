@@ -282,7 +282,8 @@ public class CLPTask {
         if (energyOptimizationSelected)
         {
             //Branch and Bound
-            result = labelMaster.labeling(store, selectMaster, energySum);            
+            labelMaster.setTimeOut(100);
+            result = labelMaster.labeling(store, selectMaster, energySum);
         }
         else
         {
