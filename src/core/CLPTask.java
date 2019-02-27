@@ -43,7 +43,7 @@ public class CLPTask {
     private IntVar[][] taskDurationList_i_type;    
     private static IntVar[] tasksDuration;
     private static int[] numTasks; //Number of tasks of different kinds
-    private IntVar[] tasksDurationsList;
+    private static IntVar[] tasksDurationsList;
     private int[] tasksDurationsListInt;
     
     IntVar[] varsX;
@@ -359,7 +359,8 @@ public class CLPTask {
         }
         text += "\n" + store.toString();
         text += "\nEnergySum = " + String.valueOf(energySum.value());
-        text += "\n Max X coord = " + String.valueOf(maxXCoord);
+        text += "\nMax X coord = " + String.valueOf(maxXCoord + 
+                tasksDurationsList[tasksDurationsList.length-1].value());
         
         return text;
     }
